@@ -1,0 +1,56 @@
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import { GraduationCap, LogIn, UserPlus } from "lucide-react";
+
+export default function PublicLayout() {
+  const { user } = useAuth();
+  const nav = useNavigate();
+
+  return (
+    <div className="min-h-screen flex flex-col bg-slate-50">
+      {/* Navbar */}
+      <header className="sticky top-0 z-40 border-b border-slate-200/80 bg-white/90 backdrop-blur-lg shadow-sm">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 py-3">
+          <Link
+            to="/"
+            className="flex items-center gap-2.5 text-brand-700 font-bold text-lg group"
+          >
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-600 text-white shadow-sm group-hover:bg-brand-700 transition-colors">
+              <GraduationCap className="h-5 w-5" />
+            </div>
+            <span className="hidden sm:inline tracking-tight">
+              งานเลี้ยงรุ่นศิษย์เก่า 2026
+            </span>
+          </Link>
+          <nav className="flex items-center gap-1 text-sm">
+            {user ? (
+              <button
+                onClick={() => nav("/account")}
+                className="btn-primary ml-2"
+              >
+                บัญชีของฉัน
+              </button>
+            ) : (
+              <>
+                <Link to="/login" className="btn-secondary ml-2">
+                  <LogIn className="h-4 w-4" /> เข้าสู่ระบบ
+                </Link>
+                <Link to="/register" className="btn-primary">
+                  <UserPlus className="h-4 w-4" /> ลงทะเบียน
+                </Link>
+              </>
+            )}
+          </nav>
+        </div>
+      </header>
+      <main className="flex-1">
+        <Outlet />
+      </main>
+      <footer className="border-t border-slate-200 bg-white py-8 text-center text-xs text-slate-400">
+        <p className="mt-1.5 text-slate-300">
+          © 2026 Ticket Registration & Sales System
+        </p>
+      </footer>
+    </div>
+  );
+}
